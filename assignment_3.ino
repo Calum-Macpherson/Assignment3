@@ -22,7 +22,7 @@ void setup() {
   
   Serial.begin(9600);
 
-  queuePotVal=xQueueCreate( 4,sizeof(float));
+  queuePotVal=xQueueCreate( 1,sizeof(float));
   
   xTaskCreate(task1,"task1",1024,NULL,1, NULL);
   xTaskCreate(task2,"task2",1024,NULL,1, NULL);
@@ -92,11 +92,17 @@ void task4(void *pvParameters){
     vTaskDelayUntil(&xLastWakeTime,xFrequency); 
 }
 void task5(void *pvParameters){
+  potValArray[3]={0, 0, 0, 0};
+  
   TickType_t xLastWakeTime;
     const TickType_t xFrequency = 42;
     //Initialise the xLastWakeTime variable with the current time.
     xLastWakeTime = xTaskGetTickCount();
 
+    for(;;){
+      if (xQueueReceive(queuePotVal,&potValArray,(TickType_t)10))
+      
+    }
 
 
   vTaskDelayUntil(&xLastWakeTime,xFrequency); 
